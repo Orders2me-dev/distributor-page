@@ -27,26 +27,29 @@ export default function Hero() {
     <section style={{
       minHeight: "100vh",
       display: "grid",
-      // On mobile: image on top, copy below
       gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
       gridTemplateRows: isMobile ? "auto 1fr" : "1fr",
       paddingTop: 58,
+      width: "100%",
+      overflowX: "hidden",
+      boxSizing: "border-box",
     }}>
 
-      {/* IMAGE — renders first in DOM so it appears on top on mobile */}
+      {/* IMAGE */}
       <div style={{
         background: "#f7fafb",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: isMobile ? "2rem 2.5rem 1rem" : "4rem",
+        padding: isMobile ? "2rem 1.5rem 1rem" : "4rem",
         position: "relative",
         overflow: "hidden",
-        minHeight: isMobile ? 220 : "auto",
-        // On desktop, move image to the right column
+        minHeight: isMobile ? 200 : "auto",
         order: isMobile ? -1 : 1,
         borderLeft: isMobile ? "none" : "1px solid #e4ecef",
         borderBottom: isMobile ? "1px solid #e4ecef" : "none",
+        width: "100%",
+        boxSizing: "border-box",
       }}>
         {images.map((src, i) => (
           <Image
@@ -58,7 +61,7 @@ export default function Hero() {
             priority={i === 0}
             style={{
               position: i === 0 ? "relative" : "absolute",
-              width: isMobile ? "75%" : "100%",
+              width: isMobile ? "70%" : "100%",
               height: "auto",
               objectFit: "contain",
               filter: "drop-shadow(0 16px 40px rgba(23,167,206,0.15))",
@@ -78,13 +81,17 @@ export default function Hero() {
         flexDirection: "column",
         justifyContent: "center",
         order: isMobile ? 1 : 0,
+        width: "100%",
+        boxSizing: "border-box",
+        overflow: "hidden",
       }}>
+
         {/* Eyebrow */}
         <div style={{
           display: "inline-flex", alignItems: "center", gap: 8,
           color: "#17a7ce", fontSize: "0.68rem", fontWeight: 600,
           letterSpacing: "2px", textTransform: "uppercase",
-          marginBottom: isMobile ? 16 : 24,
+          marginBottom: isMobile ? 14 : 24,
         }}>
           <span style={{
             width: 6, height: 6, borderRadius: "50%",
@@ -93,14 +100,17 @@ export default function Hero() {
           Now Recruiting Partners
         </div>
 
-        {/* Headline — single word on its own line on mobile */}
+        {/* Headline — fit to screen width */}
         <h1 style={{
           fontFamily: "'Bebas Neue', sans-serif",
-          fontSize: isMobile ? "clamp(5rem, 24vw, 7rem)" : "clamp(5rem, 9vw, 9rem)",
-          lineHeight: 0.88,
-          letterSpacing: "2px",
+          // Key fix: use vw but cap it so DISTRIBUTORS fits on one line
+          fontSize: isMobile ? "clamp(2.8rem, 11vw, 4.5rem)" : "clamp(5rem, 9vw, 9rem)",
+          lineHeight: 0.92,
+          letterSpacing: isMobile ? "1px" : "2px",
           color: "#0a0f12",
           marginBottom: isMobile ? 20 : 32,
+          wordBreak: "keep-all",
+          whiteSpace: isMobile ? "normal" : "normal",
         }}>
           DISTRIBUTORS<br />
           <span style={{ color: "#17a7ce" }}>WANTED</span>
@@ -108,10 +118,10 @@ export default function Hero() {
 
         {/* Subtext */}
         <p style={{
-          fontSize: isMobile ? "0.9rem" : "1.05rem",
+          fontSize: isMobile ? "0.88rem" : "1.05rem",
           color: "#6b7f89",
           lineHeight: 1.75,
-          maxWidth: 560,
+          maxWidth: "100%",
           marginBottom: isMobile ? 28 : 40,
           fontWeight: 400,
         }}>
@@ -119,11 +129,13 @@ export default function Hero() {
           restaurant needs. Zero upfront cost, full training, uncapped earnings.
         </p>
 
-        {/* CTAs — full width on mobile */}
+        {/* CTAs */}
         <div style={{
           display: "flex",
           gap: 10,
           flexDirection: isMobile ? "column" : "row",
+          width: "100%",
+          boxSizing: "border-box",
         }}>
           <Link href="#apply" style={{
             background: "#0a0f12",
@@ -134,6 +146,8 @@ export default function Hero() {
             fontWeight: 600,
             textDecoration: "none",
             textAlign: "center",
+            boxSizing: "border-box",
+            width: isMobile ? "100%" : "auto",
           }}>
             Become a Distributor →
           </Link>
@@ -146,6 +160,8 @@ export default function Hero() {
             fontWeight: 500,
             textDecoration: "none",
             textAlign: "center",
+            boxSizing: "border-box",
+            width: isMobile ? "100%" : "auto",
           }}>
             See Products
           </Link>
