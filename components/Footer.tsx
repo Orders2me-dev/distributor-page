@@ -15,6 +15,8 @@ export default function Footer() {
       alignItems: isMobile ? "flex-start" : "center",
       justifyContent: "space-between",
       gap: 12,
+      width: "100%",
+      boxSizing: "border-box",
     }}>
       <span style={{ fontWeight: 600, fontSize: "0.95rem", color: "#0a0f12" }}>
         orders<span style={{ color: "#17a7ce" }}>2me</span>
