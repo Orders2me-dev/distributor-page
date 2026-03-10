@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useIsMobile } from "@/app/hooks/useIsMobile";
 
 export default function Navbar() {
@@ -15,16 +16,31 @@ export default function Navbar() {
       background: "rgba(255,255,255,0.92)",
       backdropFilter: "blur(16px)",
       borderBottom: "1px solid #e4ecef",
+      boxSizing: "border-box",
+      width: "100%",
     }}>
-      <span style={{ fontWeight: 600, fontSize: "1.05rem", color: "#0a0f12" }}>
-        orders<span style={{ color: "#17a7ce" }}>2me</span>
-      </span>
+      <Image
+        src="/assets/orders2meLogo.png"
+        alt="orders2me"
+        width={140}
+        height={40}
+        priority
+        style={{
+          height: isMobile ? 28 : 34,
+          width: "auto",
+          objectFit: "contain",
+        }}
+      />
+
       <Link href="tel:8008811622" style={{
-        background: "#17a7ce", color: "#fff",
+        background: "#17a7ce",
+        color: "#fff",
         padding: isMobile ? "6px 14px" : "7px 20px",
         borderRadius: 6,
         fontSize: isMobile ? "0.75rem" : "0.82rem",
-        fontWeight: 600, textDecoration: "none",
+        fontWeight: 600,
+        textDecoration: "none",
+        whiteSpace: "nowrap",
       }}>
         {isMobile ? "(800) 881-1622" : "Call +1 800-881-1622"}
       </Link>
