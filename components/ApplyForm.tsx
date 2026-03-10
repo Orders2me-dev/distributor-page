@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useIsMobile } from "@/app/hooks/useIsMobile";
 
 interface FormState {
   name: string;
@@ -18,6 +19,7 @@ const fields: { label: string; key: keyof FormState; type: string; placeholder: 
 export default function ApplyForm() {
   const [form, setForm] = useState<FormState>({ name: "", email: "", phone: "" });
   const [submitted, setSubmitted] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,28 +27,33 @@ export default function ApplyForm() {
   };
 
   return (
-    <section id="apply" style={{ background: "#0a0f12", padding: "100px 4rem" }}>
+    <section id="apply" style={{
+      background: "#0a0f12",
+      padding: isMobile ? "64px 1.5rem" : "100px 4rem",
+    }}>
       <div style={{
         maxWidth: 1200, margin: "0 auto",
-        display: "grid", gridTemplateColumns: "1fr 1fr",
-        gap: 80, alignItems: "center",
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: isMobile ? 48 : 80,
+        alignItems: "center",
       }}>
         <div>
           <h2 style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(3.5rem, 6vw, 6rem)",
+            fontSize: isMobile ? "clamp(3rem, 14vw, 4.5rem)" : "clamp(3.5rem, 6vw, 6rem)",
             lineHeight: 0.9, color: "#fff", marginBottom: 20, letterSpacing: "1px",
           }}>
             READY TO<br /><span style={{ color: "#17a7ce" }}>GET STARTED?</span>
           </h2>
-          <p style={{ color: "#6b8a96", fontSize: "0.93rem", lineHeight: 1.75, marginBottom: 36 }}>
+          <p style={{ color: "#6b8a96", fontSize: "0.93rem", lineHeight: 1.75, marginBottom: 28 }}>
             Fill in your details and an orders2me representative will be in touch
             within 24 hours to walk you through the opportunity.
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: 10, color: "#9ab5c0", fontSize: "0.85rem" }}>
-            <span>Or call us directly —</span>
-            <Link href="tel:8888700017" style={{ color: "#17a7ce", textDecoration: "none", fontWeight: 600 }}>
-              (888) 870-0017
+            <span>Or call us —</span>
+            <Link href="tel:8008811622" style={{ color: "#17a7ce", textDecoration: "none", fontWeight: 600 }}>
+              (800) 881-1622
             </Link>
           </div>
         </div>
@@ -57,12 +64,18 @@ export default function ApplyForm() {
             border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16,
           }}>
             <div style={{ fontSize: "2.5rem", color: "#17a7ce", marginBottom: 16 }}>✓</div>
-            <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "3rem", color: "#fff", marginBottom: 10 }}>
+            <h3 style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: "3rem", color: "#fff", marginBottom: 10,
+            }}>
               YOU&apos;RE IN
             </h3>
             <p style={{ color: "#6b8a96", fontSize: "0.9rem", lineHeight: 1.6 }}>
               We&apos;ll be in touch within 24 hours.<br />
-              Questions? Call <Link href="tel:8888700017" style={{ color: "#17a7ce", textDecoration: "none" }}>(888) 870-0017</Link>
+              Questions? Call{" "}
+              <Link href="tel:8008811622" style={{ color: "#17a7ce", textDecoration: "none" }}>
+                (800) 881-1622
+              </Link>
             </p>
           </div>
         ) : (
