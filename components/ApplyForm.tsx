@@ -1,30 +1,21 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import { useIsMobile } from "@/app/hooks/useIsMobile";
+import { submitApplication, type FormState } from "@/app/actions";
 
-interface FormState {
-  name: string;
-  email: string;
-  phone: string;
-}
-
-const fields: { label: string; key: keyof FormState; type: string; placeholder: string }[] = [
+const fields: { label: string; key: string; type: string; placeholder: string }[] = [
   { label: "Full Name", key: "name",  type: "text",  placeholder: "Jane Smith" },
   { label: "Email",     key: "email", type: "email", placeholder: "jane@example.com" },
   { label: "Phone",     key: "phone", type: "tel",   placeholder: "(555) 000-0000" },
 ];
 
-export default function ApplyForm() {
-  const [form, setForm] = useState<FormState>({ name: "", email: "", phone: "" });
-  const [submitted, setSubmitted] = useState(false);
-  const isMobile = useIsMobile();
+const initialState: FormState = { success: false };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+export default function ApplyForm() {
+  const isMobile = useIsMobile();
+  const [state, formAction, pending] = useActionState(submitApplication, initialState);
 
   return (
     <section id="apply" style={{
@@ -38,6 +29,7 @@ export default function ApplyForm() {
         gap: isMobile ? 48 : 80,
         alignItems: "center",
       }}>
+        {/* Left copy */}
         <div>
           <h2 style={{
             fontFamily: "'Bebas Neue', sans-serif",
@@ -58,7 +50,8 @@ export default function ApplyForm() {
           </div>
         </div>
 
-        {submitted ? (
+        {/* Right — form or success */}
+        {state.success ? (
           <div style={{
             textAlign: "center", padding: "60px 40px",
             border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16,
@@ -79,7 +72,7 @@ export default function ApplyForm() {
             </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {fields.map(({ label, key, type, placeholder }) => (
               <div key={key} style={{ display: "flex", flexDirection: "column", gap: 5 }}>
                 <label htmlFor={key} style={{
@@ -90,8 +83,6 @@ export default function ApplyForm() {
                 </label>
                 <input
                   id={key} name={key} type={type} required placeholder={placeholder}
-                  value={form[key]}
-                  onChange={(e) => setForm((prev) => ({ ...prev, [key]: e.target.value }))}
                   style={{
                     background: "rgba(255,255,255,0.05)",
                     border: "1px solid rgba(255,255,255,0.09)",
@@ -101,13 +92,31 @@ export default function ApplyForm() {
                 />
               </div>
             ))}
-            <button type="submit" style={{
-              background: "#17a7ce", color: "#fff", padding: "15px",
-              borderRadius: 8, border: "none", fontSize: "0.95rem",
-              fontWeight: 600, cursor: "pointer",
-              fontFamily: "DM Sans, sans-serif", marginTop: 8,
-            }}>
-              Become a Distributor →
+
+            {/* Error message */}
+            {state.error && (
+              <p style={{
+                color: "#ff6b6b", fontSize: "0.82rem",
+                background: "rgba(255,107,107,0.08)",
+                border: "1px solid rgba(255,107,107,0.2)",
+                padding: "10px 14px", borderRadius: 8, margin: 0,
+              }}>
+                {state.error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={pending}
+              style={{
+                background: "#17a7ce", color: "#fff", padding: "15px",
+                borderRadius: 8, border: "none", fontSize: "0.95rem",
+                fontWeight: 600, cursor: pending ? "not-allowed" : "pointer",
+                fontFamily: "DM Sans, sans-serif", marginTop: 8,
+                opacity: pending ? 0.6 : 1, transition: "opacity 0.15s",
+              }}
+            >
+              {pending ? "Submitting..." : "Become a Distributor →"}
             </button>
           </form>
         )}
