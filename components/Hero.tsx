@@ -56,7 +56,7 @@ export default function Hero() {
           color: "#0a0f12",
           marginBottom: 32,
         }}>
-          DISTRI<br />BUTORS<br />
+          DISTRIBUTORS<br />
           <span style={{ color: "#17a7ce" }}>WANTED</span>
         </h1>
 
